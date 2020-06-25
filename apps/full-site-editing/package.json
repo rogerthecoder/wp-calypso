@@ -131,6 +131,9 @@
 	},
 	"devDependencies": {
 		"@types/wordpress__plugins": "^2.3.6",
-		"@wordpress/eslint-plugin": "^6.0.0"
+		"@babel/preset-typescript": "^7.10.1",
+		"@types/jest": "^26.0.3",
+		"@wordpress/eslint-plugin": "^6.0.0",
+		"babel-jest": "^26.1.0"
 	}
 }
