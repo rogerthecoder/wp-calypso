@@ -86,6 +86,7 @@ export function Gutenboard() {
 							settings={ {
 								templateLock: 'all',
 								alignWide: true,
+								hasFixedToolbar: true,
 							} }
 						>
 							<div className="gutenboarding__content edit-post-layout__content">
