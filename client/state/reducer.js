@@ -74,7 +74,6 @@ import userDevices from './user-devices/reducer';
 import userProfileLinks from './profile-links/reducer';
 import userSettings from './user-settings/reducer';
 import users from './users/reducer';
-import wordads from './wordads/reducer';
 
 // Legacy reducers
 // The reducers in this list are not modularized, and are always loaded on boot.
@@ -141,7 +140,6 @@ const reducers = {
 	userProfileLinks,
 	userSettings,
 	users,
-	wordads,
 };
 
 export default combineReducers( reducers );
