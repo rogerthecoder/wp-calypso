@@ -72,6 +72,15 @@ export const getTask = (
 ) => {
 	let taskData = {};
 	switch ( task.id ) {
+		case 'site_created':
+			taskData = {
+				timing: 1,
+				title: translate( 'Site Created' ),
+				description: translate(
+					'Create your site on WordPress.com. This is task was automatically completed when you created your new website.'
+				),
+			};
+			break;
 		case 'domain_verified':
 			taskData = {
 				timing: 2,
