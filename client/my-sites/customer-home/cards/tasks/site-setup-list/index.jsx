@@ -248,17 +248,19 @@ const SiteSetupList = ( {
 							{ currentTask.description }
 						</p>
 						<div className="site-setup-list__task-actions task__actions">
-							<Button
-								className="site-setup-list__task-action task__action"
-								primary
-								onClick={ () => startTask( dispatch, currentTask, siteId ) }
-								disabled={
-									currentTask.isDisabled ||
-									( currentTask.isCompleted && currentTask.actionDisableOnComplete )
-								}
-							>
-								{ currentTask.actionText }
-							</Button>
+							{ currentTask.actionText && (
+								<Button
+									className="site-setup-list__task-action task__action"
+									primary
+									onClick={ () => startTask( dispatch, currentTask, siteId ) }
+									disabled={
+										currentTask.isDisabled ||
+										( currentTask.isCompleted && currentTask.actionDisableOnComplete )
+									}
+								>
+									{ currentTask.actionText }
+								</Button>
+							) }
 							{ currentTask.isSkippable && ! currentTask.isCompleted && (
 								<Button
 									className="site-setup-list__task-skip task__skip is-link"
