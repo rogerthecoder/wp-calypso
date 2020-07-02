@@ -42,6 +42,9 @@ import {
 import PaymentLogo from 'my-sites/checkout/composite-checkout/wpcom/components/payment-logo';
 import { showStripeModalAuth } from 'lib/stripe';
 import Spinner from 'my-sites/checkout/composite-checkout/wpcom/components/spinner';
+import CountrySelectMenu from 'my-sites/checkout/composite-checkout/wpcom/components/country-select-menu';
+import useCountryList from 'my-sites/checkout/composite-checkout/wpcom/hooks/use-country-list';
+import { isValid } from 'my-sites/checkout/composite-checkout/wpcom/types';
 
 const debug = debugFactory( 'calypso:composite-checkout:credit-card' );
 
@@ -172,6 +175,7 @@ function StripeCreditCardFields() {
 	const { changeCardholderName, changeBrand, setCardDataError, setCardDataComplete } = useDispatch(
 		'stripe'
 	);
+	const [ shouldShowContactFields, setShowContactFields ] = useState( false );
 
 	const handleStripeFieldChange = ( input ) => {
 		setCardDataComplete( input.elementType, input.complete );
@@ -281,6 +285,14 @@ function StripeCreditCardFields() {
 					isError={ cardholderName?.isTouched && cardholderName?.value.length === 0 }
 					errorMessage={ __( 'This field is required' ) }
 				/>
+
+				<input
+					type="checkbox"
+					checked={ shouldShowContactFields }
+					onChange={ ( event ) => setShowContactFields( event.target.checked ) }
+				/>
+
+				{ shouldShowContactFields && <ContactFields /> }
 			</CreditCardFieldsWrapper>
 		</StripeFields>
 	);
@@ -697,3 +709,54 @@ const CVVImage = styled( CVV )`
 	display: block;
 	width: 100%;
 `;
+
+function ContactFields() {
+	const { formStatus } = useFormStatus();
+	const { __ } = useI18n();
+	const isDisabled = formStatus !== 'ready';
+	const countriesList = useCountryList( [] );
+
+	const [ ccInfo, setCcInfo ] = useState( {
+		postalCode: { value: '', isTouched: false },
+		countryCode: { value: '', isTouched: false },
+	} );
+	const { postalCode, countryCode } = ccInfo;
+	const updatePostalCode = ( value ) =>
+		setCcInfo( ( oldInfo ) => ( { ...oldInfo, postalCode: { value, isTouched: true } } ) );
+	const updateCountryCode = ( value ) =>
+		setCcInfo( ( oldInfo ) => ( { ...oldInfo, countryCode: { value, isTouched: true } } ) );
+
+	return (
+		<FieldRow>
+			<LeftColumn>
+				<Field
+					id="credit-card-postal-code"
+					type="text"
+					label={ __( 'Postal code' ) }
+					value={ postalCode.value }
+					disabled={ isDisabled }
+					onChange={ ( value ) => {
+						updatePostalCode( value );
+					} }
+					autoComplete="postal-code"
+					isError={ postalCode.isTouched && ! isValid( postalCode ) }
+					errorMessage={ __( 'This field is required.' ) }
+				/>
+			</LeftColumn>
+
+			<RightColumn>
+				<CountrySelectMenu
+					translate={ __ }
+					onChange={ ( event ) => {
+						updateCountryCode( event.target.value );
+					} }
+					isError={ countryCode.isTouched && ! isValid( countryCode ) }
+					isDisabled={ isDisabled }
+					errorMessage={ __( 'This field is required.' ) }
+					currentValue={ countryCode.value }
+					countriesList={ countriesList }
+				/>
+			</RightColumn>
+		</FieldRow>
+	);
+}
