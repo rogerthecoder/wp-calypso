@@ -77,7 +77,7 @@ export const getTask = (
 				timing: 1,
 				title: translate( 'Site Created' ),
 				description: translate(
-					'Create your site on WordPress.com. This is task was automatically completed when you created your new website.'
+					'You created your site on WordPress.com. This is task was automatically completed when you created your new website.'
 				),
 			};
 			break;
