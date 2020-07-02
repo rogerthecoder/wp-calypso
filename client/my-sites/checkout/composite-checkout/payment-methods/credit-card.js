@@ -219,61 +219,6 @@ function StripeCreditCardFields() {
 			{ ! isStripeFullyLoaded && <LoadingFields /> }
 
 			<CreditCardFieldsWrapper isLoaded={ isStripeFullyLoaded }>
-				<Label>
-					<LabelText>{ __( 'Card number' ) }</LabelText>
-					<StripeFieldWrapper className="number" hasError={ cardNumberError }>
-						<CardNumberElement
-							style={ cardNumberStyle }
-							onReady={ () => {
-								setIsStripeFullyLoaded( true );
-							} }
-							onChange={ ( input ) => {
-								handleStripeFieldChange( input );
-							} }
-						/>
-						<PaymentLogo brand={ brand } />
-
-						{ cardNumberError && <StripeErrorMessage>{ cardNumberError }</StripeErrorMessage> }
-					</StripeFieldWrapper>
-				</Label>
-				<FieldRow gap="4%" columnWidths="48% 48%">
-					<LeftColumn>
-						<Label>
-							<LabelText>{ __( 'Expiry date' ) }</LabelText>
-							<StripeFieldWrapper className="expiration-date" hasError={ cardExpiryError }>
-								<CardExpiryElement
-									style={ cardNumberStyle }
-									onChange={ ( input ) => {
-										handleStripeFieldChange( input );
-									} }
-								/>
-							</StripeFieldWrapper>
-							{ cardExpiryError && <StripeErrorMessage>{ cardExpiryError }</StripeErrorMessage> }
-						</Label>
-					</LeftColumn>
-					<RightColumn>
-						<Label>
-							<LabelText>{ __( 'Security code' ) }</LabelText>
-							<GridRow gap="4%" columnWidths="67% 29%">
-								<LeftColumn>
-									<StripeFieldWrapper className="cvv" hasError={ cardCvcError }>
-										<CardCvcElement
-											style={ cardNumberStyle }
-											onChange={ ( input ) => {
-												handleStripeFieldChange( input );
-											} }
-										/>
-									</StripeFieldWrapper>
-								</LeftColumn>
-								<RightColumn>
-									<CVVImage />
-								</RightColumn>
-							</GridRow>
-							{ cardCvcError && <StripeErrorMessage>{ cardCvcError }</StripeErrorMessage> }
-						</Label>
-					</RightColumn>
-				</FieldRow>
-
 				<CreditCardField
 					id="cardholder-name"
 					type="Text"
@@ -298,6 +243,63 @@ function StripeCreditCardFields() {
 				</FieldRow>
 
 				{ shouldShowContactFields && <ContactFields /> }
+
+				<FieldRow>
+					<Label>
+						<LabelText>{ __( 'Card number' ) }</LabelText>
+						<StripeFieldWrapper className="number" hasError={ cardNumberError }>
+							<CardNumberElement
+								style={ cardNumberStyle }
+								onReady={ () => {
+									setIsStripeFullyLoaded( true );
+								} }
+								onChange={ ( input ) => {
+									handleStripeFieldChange( input );
+								} }
+							/>
+							<PaymentLogo brand={ brand } />
+
+							{ cardNumberError && <StripeErrorMessage>{ cardNumberError }</StripeErrorMessage> }
+						</StripeFieldWrapper>
+					</Label>
+					<FieldRow gap="4%" columnWidths="48% 48%">
+						<LeftColumn>
+							<Label>
+								<LabelText>{ __( 'Expiry date' ) }</LabelText>
+								<StripeFieldWrapper className="expiration-date" hasError={ cardExpiryError }>
+									<CardExpiryElement
+										style={ cardNumberStyle }
+										onChange={ ( input ) => {
+											handleStripeFieldChange( input );
+										} }
+									/>
+								</StripeFieldWrapper>
+								{ cardExpiryError && <StripeErrorMessage>{ cardExpiryError }</StripeErrorMessage> }
+							</Label>
+						</LeftColumn>
+						<RightColumn>
+							<Label>
+								<LabelText>{ __( 'Security code' ) }</LabelText>
+								<GridRow gap="4%" columnWidths="67% 29%">
+									<LeftColumn>
+										<StripeFieldWrapper className="cvv" hasError={ cardCvcError }>
+											<CardCvcElement
+												style={ cardNumberStyle }
+												onChange={ ( input ) => {
+													handleStripeFieldChange( input );
+												} }
+											/>
+										</StripeFieldWrapper>
+									</LeftColumn>
+									<RightColumn>
+										<CVVImage />
+									</RightColumn>
+								</GridRow>
+								{ cardCvcError && <StripeErrorMessage>{ cardCvcError }</StripeErrorMessage> }
+							</Label>
+						</RightColumn>
+					</FieldRow>
+				</FieldRow>
 			</CreditCardFieldsWrapper>
 		</StripeFields>
 	);
