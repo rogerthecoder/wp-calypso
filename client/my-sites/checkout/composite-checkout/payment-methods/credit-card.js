@@ -286,11 +286,16 @@ function StripeCreditCardFields() {
 					errorMessage={ __( 'This field is required' ) }
 				/>
 
-				<input
-					type="checkbox"
-					checked={ shouldShowContactFields }
-					onChange={ ( event ) => setShowContactFields( event.target.checked ) }
-				/>
+				<FieldRow>
+					<Label>
+						<input
+							type="checkbox"
+							checked={ ! shouldShowContactFields }
+							onChange={ ( event ) => setShowContactFields( ! event.target.checked ) }
+						/>
+						<LabelText>{ __( 'Credit card address is the same as contact details' ) }</LabelText>
+					</Label>
+				</FieldRow>
 
 				{ shouldShowContactFields && <ContactFields /> }
 			</CreditCardFieldsWrapper>
@@ -348,9 +353,10 @@ const GridRow = styled.div`
 	display: -ms-grid;
 	display: grid;
 	width: 100%;
-	-ms-grid-columns: ${ ( props ) => props.columnWidths.replace( ' ', ' ' + props.gap + ' ' ) };
-	grid-template-columns: ${ ( props ) => props.columnWidths };
-	grid-column-gap: ${ ( props ) => props.gap };
+	-ms-grid-columns: ${ ( props ) =>
+		props.columnWidths?.replace( ' ', ' ' + props.gap + ' ' ) ?? 'inherit' };
+	grid-template-columns: ${ ( props ) => props.columnWidths ?? 'none' };
+	grid-column-gap: ${ ( props ) => props.gap ?? '4%' };
 	justify-items: stretch;
 `;
 
