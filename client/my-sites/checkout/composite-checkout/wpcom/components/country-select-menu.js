@@ -2,12 +2,12 @@
  * External dependencies
  */
 import React from 'react';
-import { FormFieldAnnotation } from 'my-sites/checkout/composite-checkout/wpcom';
 
 /**
  * Internal dependencies
  */
-import { FormCountrySelect } from 'components/forms/form-country-select';
+import FormFieldAnnotation from 'my-sites/checkout/composite-checkout/wpcom/components/form-field-annotation';
+import FormCountrySelect from 'components/forms/form-country-select';
 
 export default function CountrySelectMenu( {
 	translate,
@@ -39,7 +39,6 @@ export default function CountrySelectMenu( {
 					{ code: null, name: '' },
 					...countriesList,
 				] }
-				translate={ translate }
 				onChange={ onChange }
 				disabled={ isDisabled }
 				value={ currentValue }
