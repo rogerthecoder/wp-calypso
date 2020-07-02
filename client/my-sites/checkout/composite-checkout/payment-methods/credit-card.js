@@ -727,7 +727,7 @@ function ContactFields() {
 		setCcInfo( ( oldInfo ) => ( { ...oldInfo, countryCode: { value, isTouched: true } } ) );
 
 	return (
-		<FieldRow>
+		<FieldRow gap="4%" columnWidths="48% 48%">
 			<LeftColumn>
 				<Field
 					id="credit-card-postal-code"
