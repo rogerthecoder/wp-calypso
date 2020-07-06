@@ -37,7 +37,7 @@ import { getTask } from './get-task';
  */
 import './style.scss';
 
-const startTask = ( dispatch, task, siteId ) => {
+const startTask = ( dispatch, task, siteId, advanceToNextInCompleteTask ) => {
 	dispatch(
 		recordTracksEvent( 'calypso_checklist_task_start', {
 			checklist_name: 'new_blog',
@@ -58,6 +58,10 @@ const startTask = ( dispatch, task, siteId ) => {
 
 	if ( task.actionDispatch ) {
 		dispatch( task.actionDispatch( ...task.actionDispatchArgs ) );
+	}
+
+	if ( task.actionAdvanceToNext ) {
+		advanceToNextInCompleteTask();
 	}
 };
 
@@ -103,6 +107,7 @@ const SiteSetupList = ( {
 	tasks,
 	taskUrls,
 	userEmail,
+	firstIncompleteTask,
 } ) => {
 	const [ currentTaskId, setCurrentTaskId ] = useState( null );
 	const [ currentTask, setCurrentTask ] = useState( null );
@@ -124,6 +129,14 @@ const SiteSetupList = ( {
 			}
 		}
 	}, [ currentTaskId, dispatch, tasks ] );
+
+	// If specified then automatically complete the current task when viewed.
+	useEffect( () => {
+		if ( currentTask?.completeOnView ) {
+			setUserSelectedTask( true );
+			dispatch( requestSiteChecklistTaskUpdate( siteId, currentTask.id ) );
+		}
+	}, [ currentTask, dispatch, siteId ] );
 
 	// Reset verification email state on first load.
 	useEffect( () => {
@@ -189,6 +202,13 @@ const SiteSetupList = ( {
 		return null;
 	}
 
+	const advanceToNextInCompleteTask = () => {
+		localDispatch( {
+			type: 'SET_CURRENT_TASK_ID',
+			currentTaskId: firstIncompleteTask.id,
+		} );
+	};
+
 	return (
 		<Card className={ classnames( 'site-setup-list', { 'is-loading': isLoading } ) }>
 			{ isLoading && <Spinner /> }
@@ -252,7 +272,9 @@ const SiteSetupList = ( {
 								<Button
 									className="site-setup-list__task-action task__action"
 									primary
-									onClick={ () => startTask( dispatch, currentTask, siteId ) }
+									onClick={ () =>
+										startTask( dispatch, currentTask, siteId, advanceToNextInCompleteTask )
+									}
 									disabled={
 										currentTask.isDisabled ||
 										( currentTask.isCompleted && currentTask.actionDisableOnComplete )
@@ -309,5 +331,6 @@ export default connect( ( state ) => {
 		tasks: taskList.getAll(),
 		taskUrls: getChecklistTaskUrls( state, siteId ),
 		userEmail: user?.email,
+		firstIncompleteTask: taskList.getFirstIncompleteTask(),
 	};
 } )( SiteSetupList );
