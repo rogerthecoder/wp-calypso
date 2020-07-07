@@ -566,7 +566,13 @@ export default function CompositeCheckout( {
 			'full-credits': fullCreditsProcessor,
 			'existing-card': existingCardProcessor,
 			paypal: ( transactionData ) =>
-				payPalProcessor( transactionData, getThankYouUrl, couponItem, isWhiteGloveOffer ),
+				payPalProcessor(
+					transactionData,
+					getThankYouUrl,
+					couponItem,
+					isWhiteGloveOffer,
+					isLoggedOutCart
+				),
 		} ),
 		[ couponItem, getThankYouUrl, isWhiteGloveOffer ]
 	);
