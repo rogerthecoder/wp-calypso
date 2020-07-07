@@ -227,7 +227,7 @@ const SiteSetupList = ( {
 								} }
 								showChevron={ useDrillLayout }
 							/>
-						)
+						);
 					} ) }
 				</div>
 			) }
