@@ -45,11 +45,7 @@ function HelpSearchResults( {
 } ) {
 	const supportTypeRef = useRef( searchResults?.[ 0 ]?.support_type );
 
-	function getTitleBySectionType( addSection, type, query = '' ) {
-		if ( ! addSection ) {
-			return null;
-		}
-
+	function getTitleBySectionType( type, query = '' ) {
 		let title = '';
 		switch ( type ) {
 			case SUPPORT_TYPE_CONTEXTUAL_HELP:
@@ -69,11 +65,7 @@ function HelpSearchResults( {
 				return null;
 		}
 
-		return (
-			<li className="inline-help__results-title">
-				<h2>{ title }</h2>
-			</li>
-		);
+		return title;
 	}
 
 	const onLinkClickHandler = ( event ) => {
@@ -102,10 +94,7 @@ function HelpSearchResults( {
 
 	const selectCurrentResultIndex = ( index ) => () => selectSearchResult( index );
 
-	const renderHelpLink = (
-		{ link, key, description, title, support_type = SUPPORT_TYPE_API_HELP },
-		index
-	) => {
+	const renderHelpLink = ( { link, key, title, support_type = SUPPORT_TYPE_API_HELP }, index ) => {
 		const addResultsSection = supportTypeRef?.current !== support_type || ! index;
 		if ( addResultsSection ) {
 			supportTypeRef.current = support_type;
@@ -117,23 +106,56 @@ function HelpSearchResults( {
 
 		return (
 			<Fragment key={ link ?? key }>
-				{ getTitleBySectionType( addResultsSection, support_type, searchQuery ) }
-				<li className={ classes }>
-					<a
-						href={ localizeUrl( link ) }
-						onMouseDown={ selectCurrentResultIndex( index ) }
-						onClick={ onLinkClickHandler }
-						title={ decodeEntities( description ) }
-						tabIndex={ -1 }
-					>
-						{ support_type === SUPPORT_TYPE_ADMIN_SECTION && (
-							<Gridicon icon="domains" size={ 18 } />
-						) }
-						<span>{ preventWidows( decodeEntities( title ) ) }</span>
-					</a>
+				<li role="row" className={ classes }>
+					<span role="gridcell">
+						<a
+							href={ localizeUrl( link ) }
+							onMouseDown={ selectCurrentResultIndex( index ) }
+							onClick={ onLinkClickHandler }
+							tabIndex={ -1 }
+						>
+							{ support_type === SUPPORT_TYPE_ADMIN_SECTION && (
+								<Gridicon icon="domains" size={ 18 } />
+							) }
+							<span>{ preventWidows( decodeEntities( title ) ) }</span>
+						</a>
+					</span>
 				</li>
 			</Fragment>
 		);
+	};
+
+	const renderSearchResultsSection = ( id, title, results ) => {
+		/* eslint-disable jsx-a11y/no-noninteractive-element-to-interactive-role */
+		return (
+			<Fragment key={ id }>
+				{ title ? <h3 id={ id }> { title }</h3> : null }
+				<ul
+					role="grid"
+					className="inline-help__results-list"
+					aria-labelledby={ title ? id : undefined }
+				>
+					{ results.map( renderHelpLink ) }
+				</ul>
+			</Fragment>
+		);
+		/* eslint-enable jsx-a11y/no-noninteractive-element-to-interactive-role */
+	};
+
+	const renderSearchSections = ( results, query ) => {
+		// Get the unique result types
+		// TODO: Clean this up. There has to be a simpler way to find the unique search result types
+		const searchResultTypes = results
+			.map( ( searchResult ) => searchResult.support_type )
+			.filter( ( type, index, arr ) => arr.indexOf( type ) === index );
+
+		return searchResultTypes.map( ( resultType ) => {
+			return renderSearchResultsSection(
+				`inline-search--${ resultType }`,
+				getTitleBySectionType( resultType, query ),
+				results.filter( ( r ) => r.support_type === resultType )
+			);
+		} );
 	};
 
 	const renderSearchResults = () => {
@@ -155,7 +177,9 @@ function HelpSearchResults( {
 					</p>
 				) }
 
-				<ul className="inline-help__results-list">{ searchResults.map( renderHelpLink ) }</ul>
+				<div aria-label={ translate( 'Search Results' ) }>
+					{ renderSearchSections( searchResults, searchQuery ) }
+				</div>
 			</>
 		);
 	};
