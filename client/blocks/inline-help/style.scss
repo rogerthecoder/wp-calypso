@@ -337,28 +337,37 @@
 	}
 }
 
-.inline-help__results-list {
-	list-style: none;
-	text-align: left;
-	margin: 0;
-	padding: 8px 0;
+.inline-help__results {
 
+	padding: 8px 0;
+	
 	.help-contact-form & {
 		padding: 0;
 	}
 }
 
+.inline-help__results-list {
+	list-style: none;
+	text-align: left;
+	margin: 0;
+	padding: 0;
+}
+
 .inline-help__results-title {
-	h2 {
-		font-weight: bold;
-		line-height: 1.4;
-		display: block;
-		padding: 8px 16px;
-		font-size: $font-body-small;
-		&:after {
-			content: ':';
-		}
+	font-weight: bold;
+	line-height: 1.4;
+	display: block;
+	padding: 8px 16px;
+	font-size: $font-body-small;
+	text-align: left;
+	
+	&::after {
+		content: ':';
 	}
+}
+
+.inline-help__results-cell {
+	width: 100%;
 }
 
 .inline-help__results-item {

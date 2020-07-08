@@ -107,7 +107,7 @@ function HelpSearchResults( {
 		return (
 			<Fragment key={ link ?? key }>
 				<li role="row" className={ classes }>
-					<span role="gridcell">
+					<div className="inline-help__results-cell" role="gridcell">
 						<a
 							href={ localizeUrl( link ) }
 							onMouseDown={ selectCurrentResultIndex( index ) }
@@ -119,7 +119,7 @@ function HelpSearchResults( {
 							) }
 							<span>{ preventWidows( decodeEntities( title ) ) }</span>
 						</a>
-					</span>
+					</div>
 				</li>
 			</Fragment>
 		);
@@ -129,7 +129,12 @@ function HelpSearchResults( {
 		/* eslint-disable jsx-a11y/no-noninteractive-element-to-interactive-role */
 		return (
 			<Fragment key={ id }>
-				{ title ? <h3 id={ id }> { title }</h3> : null }
+				{ title ? (
+					<h3 id={ id } className="inline-help__results-title">
+						{ ' ' }
+						{ title }
+					</h3>
+				) : null }
 				<ul
 					role="grid"
 					className="inline-help__results-list"
@@ -177,7 +182,7 @@ function HelpSearchResults( {
 					</p>
 				) }
 
-				<div aria-label={ translate( 'Search Results' ) }>
+				<div className="inline-help__results" aria-label={ translate( 'Search Results' ) }>
 					{ renderSearchSections( searchResults, searchQuery ) }
 				</div>
 			</>
