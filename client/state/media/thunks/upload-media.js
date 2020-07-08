@@ -42,7 +42,8 @@ export const uploadMedia = (
 	onItemUploaded = noop,
 	onItemFailure = noop
 ) => async ( dispatch ) => {
-	files = castArray( files );
+	// https://stackoverflow.com/questions/25333488/why-isnt-the-filelist-object-an-array
+	files = files instanceof window.FileList ? Array.from( files ) : castArray( files );
 	const uploadedItems = [];
 
 	const transientItems = dispatch( createTransientMediaItems( files, site ) );
