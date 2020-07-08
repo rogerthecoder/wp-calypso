@@ -15,7 +15,6 @@ import { createTransientMedia } from './utils';
 import MediaStore from './store';
 import MediaListStore from './list-store';
 import {
-	changeMediaSource,
 	deleteMedia,
 	failMediaRequest,
 	receiveMedia,
@@ -181,15 +180,6 @@ MediaActions.delete = function ( siteId, item ) {
 				siteId: siteId,
 			} );
 		} );
-};
-
-MediaActions.sourceChanged = function ( siteId ) {
-	debug( 'Media data source changed' );
-	Dispatcher.handleViewAction( {
-		type: 'CHANGE_MEDIA_SOURCE',
-		siteId,
-	} );
-	reduxDispatch( changeMediaSource( siteId ) );
 };
 
 export default MediaActions;
