@@ -72,7 +72,7 @@ export const getTask = (
 ) => {
 	let taskData = {};
 	switch ( task.id ) {
-		case 'site_created':
+		case 'start_site_setup':
 			taskData = {
 				timing: 1,
 				title: translate( 'Site created' ),
