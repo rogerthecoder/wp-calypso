@@ -133,7 +133,7 @@ const SiteSetupList = ( {
 	// If specified, then automatically complete the current task when viewed
 	// if it is not already complete.
 	useEffect( () => {
-		if ( currentTask?.completeOnView && ! currentTask.isCompleted ) {
+		if ( currentTask?.completeOnView && ! currentTask?.isCompleted ) {
 			dispatch( requestSiteChecklistTaskUpdate( siteId, currentTask.id ) );
 			setTaskIsManuallySelected( true ); // force selected even though complete
 		}
