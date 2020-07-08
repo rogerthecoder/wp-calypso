@@ -401,23 +401,9 @@
 			//color: var( --color-primary );
 			background: var( --color-neutral-0 );
 		}
-	}
 
-	&.is-selected {
-		background: var( --color-primary );
-		cursor: pointer;
-		color: var( --color-text-inverted );
-
-		&:hover,
 		&:focus {
-			background: none;
-
-			a {
-				color: var( --color-link-dark );
-			}
-		}
-
-		a {
+			background: var( --color-primary );
 			color: var( --color-text-inverted );
 		}
 	}
