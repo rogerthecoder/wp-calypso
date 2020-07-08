@@ -36,7 +36,6 @@ function HelpSearchResults( {
 	onSelect,
 	searchQuery = '',
 	searchResults = [],
-	selectedResult = {},
 	selectedResultIndex = -1,
 	selectSearchResult,
 	translate = identity,
@@ -68,9 +67,8 @@ function HelpSearchResults( {
 		return title;
 	}
 
-	const onLinkClickHandler = ( event ) => {
-		const { support_type: supportType, link } = selectedResult;
-
+	const onLinkClickHandler = ( event, result ) => {
+		const { support_type: supportType, link } = result;
 		// check and catch admin section links.
 		if ( supportType === SUPPORT_TYPE_ADMIN_SECTION && link ) {
 			// record track-event.
@@ -88,31 +86,28 @@ function HelpSearchResults( {
 			return;
 		}
 
-		// Set the current selected result item.
-		onSelect( event );
+		onSelect( event, result );
 	};
 
-	const selectCurrentResultIndex = ( index ) => () => selectSearchResult( index );
-
-	const renderHelpLink = ( { link, key, title, support_type = SUPPORT_TYPE_API_HELP }, index ) => {
-		const addResultsSection = supportTypeRef?.current !== support_type || ! index;
-		if ( addResultsSection ) {
-			supportTypeRef.current = support_type;
-		}
+	const renderHelpLink = ( result ) => {
+		const { link, key, title, support_type = SUPPORT_TYPE_API_HELP } = result;
+		const resultIndex = searchResults.findIndex( ( r ) => r.link === link );
 
 		const classes = classNames( 'inline-help__results-item', {
-			'is-selected': selectedResultIndex === index,
+			'is-selected': selectedResultIndex === resultIndex,
 		} );
 
 		return (
 			<Fragment key={ link ?? key }>
-				<li role="row" className={ classes }>
-					<div className="inline-help__results-cell" role="gridcell">
+				<li className={ classes }>
+					<div className="inline-help__results-cell">
 						<a
 							href={ localizeUrl( link ) }
-							onMouseDown={ selectCurrentResultIndex( index ) }
-							onClick={ onLinkClickHandler }
-							tabIndex={ -1 }
+							onClick={ ( event ) => {
+								event.preventDefault();
+								selectSearchResult( resultIndex );
+								onLinkClickHandler( event, result );
+							} }
 						>
 							{ support_type === SUPPORT_TYPE_ADMIN_SECTION && (
 								<Gridicon icon="domains" size={ 18 } />
@@ -131,15 +126,10 @@ function HelpSearchResults( {
 			<Fragment key={ id }>
 				{ title ? (
 					<h3 id={ id } className="inline-help__results-title">
-						{ ' ' }
 						{ title }
 					</h3>
 				) : null }
-				<ul
-					role="grid"
-					className="inline-help__results-list"
-					aria-labelledby={ title ? id : undefined }
-				>
+				<ul className="inline-help__results-list" aria-labelledby={ title ? id : undefined }>
 					{ results.map( renderHelpLink ) }
 				</ul>
 			</Fragment>
