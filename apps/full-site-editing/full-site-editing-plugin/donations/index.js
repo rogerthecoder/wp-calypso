@@ -9,7 +9,7 @@ import { __, _x } from '@wordpress/i18n';
  * Internal dependencies
  */
 import edit from './edit';
-import { getCategortyWithFallbacks } from '../block-helpers';
+import { getCategoryWithFallbacks } from '../block-helpers';
 
 /**
  * Style dependencies
@@ -82,7 +82,7 @@ const settings = {
 			default: __( 'Donate yearly', 'full-site-editing' ),
 		},
 	},
-	category: getCategortyWithFallbacks( 'widgets', 'common' ),
+	category: getCategoryWithFallbacks( 'widgets', 'common' ),
 	icon: (
 		<svg width="25" height="24" viewBox="0 0 25 24" fill="none" xmlns="http://www.w3.org/2000/svg">
 			<path
