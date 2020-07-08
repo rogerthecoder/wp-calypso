@@ -203,10 +203,7 @@ const SiteSetupList = ( {
 	}
 
 	const advanceToNextIncompleteTask = () => {
-		localDispatch( {
-			type: 'SET_CURRENT_TASK_ID',
-			currentTaskId: firstIncompleteTask.id,
-		} );
+		setCurrentTaskId( firstIncompleteTask.id );
 	};
 
 	return (
