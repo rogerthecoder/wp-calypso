@@ -17,11 +17,7 @@ import getInlineHelpCurrentlySelectedLink from 'state/inline-help/selectors/get-
 import getSelectedResultIndex from 'state/inline-help/selectors/get-selected-result-index';
 import isRequestingInlineHelpSearchResultsForQuery from 'state/inline-help/selectors/is-requesting-inline-help-search-results-for-query';
 import getInlineHelpCurrentlySelectedResult from 'state/inline-help/selectors/get-inline-help-currently-selected-result';
-import {
-	setInlineHelpSearchQuery,
-	selectNextResult,
-	selectPreviousResult,
-} from 'state/inline-help/actions';
+import { setInlineHelpSearchQuery } from 'state/inline-help/actions';
 
 /**
  * Module variables
@@ -89,8 +85,6 @@ const mapStateToProps = ( state, ownProps ) => ( {
 const mapDispatchToProps = {
 	track: recordTracksEvent,
 	setInlineHelpSearchQuery,
-	selectNextResult,
-	selectPreviousResult,
 };
 
 export default connect( mapStateToProps, mapDispatchToProps )( localize( InlineHelpSearchCard ) );
